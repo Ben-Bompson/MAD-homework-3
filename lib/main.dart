@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'matchCard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,17 +56,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<MatchCard> cards = [
+    MatchCard('assets/redcard.jpg'),
+    MatchCard('assets/redcard.jpg'),
+    MatchCard('assets/orangecard.jpg'),
+    MatchCard('assets/orangecard.jpg'),
+    MatchCard('assets/yellowcard.jpg'),
+    MatchCard('assets/yellowcard.jpg'),
+    MatchCard('assets/greencard.jpg'),
+    MatchCard('assets/greencard.jpg'),
+    MatchCard('assets/bluecard.jpg'),
+    MatchCard('assets/bluecard.jpg'),
+    MatchCard('assets/purplecard.jpg'),
+    MatchCard('assets/purplecard.jpg'),
+    MatchCard('assets/pinkcard.jpg'),
+    MatchCard('assets/pinkcard.jpg'),
+    MatchCard('assets/blackcard.jpg'),
+    MatchCard('assets/blackcard.jpg'),
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  String img(int index) {
+    if(cards.elementAt(index).isFaceUp()){
+      return cards.elementAt(index).face;
+    }
+    return 'assets/cardback.jpg';
   }
 
   @override
@@ -86,40 +100,29 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: GridView.count(
+        crossAxisCount: 4,
+        children: List.generate(16, (index) {
+          return Center(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  cards.elementAt(index).flip();
+                });
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                
+                child: Image.asset(
+                  img(index),
+                  height: 150,
+                  width: 100,
+                ),
+              ),
+            )
+          );
+        })
+      ) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
