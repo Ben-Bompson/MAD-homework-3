@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Memory Card Game'),
     );
   }
 }
@@ -50,6 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
     MatchCard('assets/blackcard.jpg'),
   ];
 
+  int flipped = -1;
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 setState(() {
                   cards.elementAt(index).flip();
+                  if (flipped == -1){
+                    flipped = index;
+                  }
+                  else{
+                    if(img(index) != cards.elementAt(flipped).face){
+                      setState(() {
+                        cards.elementAt(index).flip();
+                        cards.elementAt(flipped).flip();
+                      });
+                    }
+                    flipped = -1;
+                  }
                 });
               },
               child: AnimatedContainer(
